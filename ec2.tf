@@ -58,14 +58,14 @@ resource "aws_security_group" "allow_ssh" {
 
 # EC2 Instance (virtual server in the cloud)
 resource "aws_instance" "my_ec2" {
-  ami           = "ami-07062e2a343acc423" 
-  key_name      = aws_key_pair.my_key.key_name # Associate the key pair for SSH access
+  ami           = var.ami_id                      # AMI ID for the EC2 instance (e.g., Amazon Linux 2) - taking from variable
+  key_name      = var.key_pair_name # Associate the key pair for SSH access
   security_groups = [aws_security_group.allow_ssh.name] # Attach the security group to the instance 
-  instance_type = "t2.micro"                # Instance type (small, free tier eligible)
+  instance_type = var.instance_type                # Instance type (small, free tier eligible)
 
 
   root_block_device {
-    volume_size = 8                          # Size of the root EBS volume in GB
+    volume_size = var.root_block_device_size                          # Size of the root EBS volume in GB
     volume_type = "gp3"                      # General Purpose SSD
   } 
     tags = {  
